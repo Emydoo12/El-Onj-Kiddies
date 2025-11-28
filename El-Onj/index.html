@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products - El-Onj Kiddies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Premium Children's Wear</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Product Slideshow -->
+    <section class="product-slideshow">
+        <div class="slideshow-container">
+            <div class="slideshow-wrapper" id="slideshow-wrapper">
+                <!-- Slides will be loaded here dynamically -->
+            </div>
+            
+            <!-- Navigation arrows -->
+            <a class="prev" onclick="changeSlide(-1)">❮</a>
+            <a class="next" onclick="changeSlide(1)">❯</a>
+            
+            <!-- Dots indicator -->
+            <div class="dots-container" id="dots-container">
+                <!-- Dots will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Page -->
+    <section class="products-page">
+        <div class="container">
+            <h2>Our Products</h2>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search for products...">
+                <button id="search-button">Search</button>
+            </div>
+            
+            <!-- Filter Options -->
+            <div class="filter-options">
+                <button class="filter-btn active" data-category="all">All Products</button>
+                <button class="filter-btn" data-category="t-shirts">T-Shirts</button>
+                <button class="filter-btn" data-category="jeans">Jeans</button>
+                <button class="filter-btn" data-category="dresses">Dresses</button>
+                <button class="filter-btn" data-category="shorts">Shorts</button>
+                <button class="filter-btn" data-category="jackets">Jackets</button>
+                <button class="filter-btn" data-category="sweaters">Sweaters</button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank"><i class="fab fa-whatsapp"></i></a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Slideshow variables
+        let slideIndex = 0;
+        let slides = [];
+        
+        // Function to get products from localStorage or use sample data
+        function getProducts() {
+            const storedProducts = localStorage.getItem('products');
+            if (storedProducts) {
+                return JSON.parse(storedProducts);
+            }
+            
+            // Return sample products if none are stored
+            return [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+        }
+        
+        // Initialize slideshow
+        function initSlideshow() {
+            const products = getProducts();
+            slides = products;
+            
+            const wrapper = document.getElementById('slideshow-wrapper');
+            const dotsContainer = document.getElementById('dots-container');
+            
+            if (!wrapper || !dotsContainer) return;
+            
+            // Clear existing content
+            wrapper.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            
+            // Create slides
+            slides.forEach((product, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.style.display = index === 0 ? 'block' : 'none';
+                
+                // Create clickable image
+                slide.innerHTML = `
+                    <a href="#product-${product.id}" class="slide-link">
+                        <img src="${product.image}" alt="${product.name}">
+                    </a>
+                `;
+                
+                wrapper.appendChild(slide);
+                
+                // Create dot
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                dot.onclick = () => currentSlide(index + 1);
+                dotsContainer.appendChild(dot);
+            });
+            
+            showSlides();
+        }
+        
+        // Show slides
+        function showSlides() {
+            const slideElements = document.getElementsByClassName('slide');
+            const dots = document.getElementsByClassName('dot');
+            
+            if (slideElements.length === 0) return;
+            
+            // Hide all slides
+            for (let i = 0; i < slideElements.length; i++) {
+                slideElements[i].style.display = 'none';
+            }
+            
+            // Remove active class from all dots
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(' active', '');
+            }
+            
+            // Show current slide and mark dot as active
+            slideElements[slideIndex].style.display = 'block';
+            if (dots[slideIndex]) {
+                dots[slideIndex].className += ' active';
+            }
+        }
+        
+        // Change slide
+        function changeSlide(n) {
+            slideIndex += n;
+            
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+            
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            }
+            
+            showSlides();
+        }
+        
+        // Current slide
+        function currentSlide(n) {
+            slideIndex = n - 1;
+            showSlides();
+        }
+        
+        // Auto slide change
+        function autoSlide() {
+            slideIndex++;
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+            showSlides();
+        }
+        
+        // Sample product data (in a real app, this would come from a database)
+        const sampleProducts = getProducts();
+        
+        // Function to load and display products
+        function loadProducts() {
+            const products = getProducts();
+            
+            const productGrid = document.getElementById('product-grid');
+            if (!productGrid) return;
+            
+            let productsHTML = '';
+            products.forEach(product => {
+                productsHTML += `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="price">₦${product.price.toLocaleString()}</div>
+                        <button class="btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                `;
+            });
+            
+            productGrid.innerHTML = productsHTML;
+        }
+        
+        // Function to display products
+        function displayProducts(products) {
+            const productGrid = document.getElementById('product-grid');
+            if (!productGrid) return;
+            
+            if (products.length === 0) {
+                productGrid.innerHTML = '<p>No products found matching your search criteria.</p>';
+                return;
+            }
+            
+            let productsHTML = '';
+            products.forEach(product => {
+                productsHTML += `
+                    <div class="product-card" data-category="${product.category}" id="product-${product.id}">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="price">₦${product.price.toLocaleString()}</div>
+                        <button class="add-to-cart-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">Add to Cart</button>
+                    </div>
+                `;
+            });
+            
+            productGrid.innerHTML = productsHTML;
+            
+            // Reattach event listeners to add to cart buttons
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    const name = this.getAttribute('data-name');
+                    const price = this.getAttribute('data-price');
+                    addToCart(id, name, price);
+                });
+            });
+        }
+        
+        // Function to filter products by category
+        function filterProductsByCategory(category) {
+            if (category === 'all') {
+                displayProducts(sampleProducts);
+                return;
+            }
+            
+            const filteredProducts = sampleProducts.filter(product => product.category === category);
+            displayProducts(filteredProducts);
+        }
+        
+        // Function to search products
+        function searchProducts(term) {
+            if (!term) {
+                displayProducts(sampleProducts);
+                return;
+            }
+            
+            const searchTerm = term.toLowerCase();
+            const filteredProducts = sampleProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) || 
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            displayProducts(filteredProducts);
+        }
+        
+        // Get search term from URL parameter
+        function getSearchTermFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('search');
+        }
+        
+        // Scroll to product if hash is present
+        function scrollToProduct() {
+            const hash = window.location.hash;
+            if (hash) {
+                const productElement = document.querySelector(hash);
+                if (productElement) {
+                    productElement.scrollIntoView({ behavior: 'smooth' });
+                    // Add a temporary highlight effect
+                    productElement.style.boxShadow = '0 0 15px rgba(255, 107, 107, 0.8)';
+                    setTimeout(() => {
+                        productElement.style.boxShadow = '';
+                    }, 2000);
+                }
+            }
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for logged in user
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const isAdmin = localStorage.getItem('isAdmin');
+            
+            // Update navigation based on login status
+            updateNavigation(currentUser, isAdmin);
+            
+            // Load cart
+            loadCart();
+            
+            // Initialize slideshow
+            initSlideshow();
+            
+            // Start auto slideshow
+            setInterval(autoSlide, 5000); // Change slide every 5 seconds
+            
+            // Check if there's a search term in the URL
+            const searchTerm = getSearchTermFromURL();
+            const searchInput = document.getElementById('search-input');
+            
+            if (searchTerm && searchInput) {
+                searchInput.value = decodeURIComponent(searchTerm);
+                searchProducts(searchTerm);
+            } else {
+                // Display all products initially
+                displayProducts(sampleProducts);
+            }
+            
+            // Search functionality
+            const searchButton = document.getElementById('search-button');
+            if (searchButton && searchInput) {
+                searchButton.addEventListener('click', function() {
+                    searchProducts(searchInput.value.trim());
+                });
+                
+                // Allow Enter key to trigger search
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchButton.click();
+                    }
+                });
+            }
+            
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Filter products
+                    const category = this.getAttribute('data-category');
+                    filterProductsByCategory(category);
+                });
+            });
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Scroll to product if coming from slideshow link
+            scrollToProduct();
+            
+            // Also check when hash changes (for back/forward navigation)
+            window.addEventListener('hashchange', scrollToProduct);
+        });
+        
+        function updateNavigation(currentUser, isAdmin) {
+            const nav = document.querySelector('nav ul');
+            if (!nav) return;
+            
+            // Remove existing auth links
+            const authLinks = document.querySelectorAll('.auth-link');
+            authLinks.forEach(link => link.remove());
+            
+            if (isAdmin) {
+                // If admin is logged in, show minimal navigation
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li class="auth-link"><a href="#" id="admin-logout">Admin Logout</a></li>
+                `;
+                
+                // Add admin logout event listener
+                document.getElementById('admin-logout').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            } else if (currentUser) {
+                // If regular user is logged in
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a></li>
+                    <li class="auth-link"><a href="#" id="user-logout">Logout (${currentUser.name})</a></li>
+                `;
+                
+                // Add user logout event listener
+                document.getElementById('user-logout').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('currentUser');
+                    alert('Logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            } else {
+                // If no user is logged in
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a></li>
+                    <li class="auth-link"><a href="login.html">Login</a></li>
+                `;
+            }
+            
+            // Load cart count
+            loadCart();
+        }
+        
+        // Footer dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

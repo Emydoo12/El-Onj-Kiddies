@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - El-Onj Kiddies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Premium Children's Wear</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Register Page -->
+    <section class="login-page">
+        <div class="container">
+            <div class="login-container">
+                <h2>Create Account</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" name="address" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Create Account</button>
+                    
+                    <!-- Social Login Options -->
+                    <div class="social-login-options">
+                        <p>Or register with:</p>
+                        <div class="social-login-buttons">
+                            <button type="button" class="social-btn google-btn">
+                                <span>G</span> Google
+                            </button>
+                            <button type="button" class="social-btn facebook-btn">
+                                <span>f</span> Facebook
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="login-options">
+                        <a href="login.html">Already have an account? Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for logged in user
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const isAdmin = localStorage.getItem('isAdmin');
+            
+            // Update navigation based on login status
+            updateNavigation(currentUser, isAdmin);
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle form submission
+            const registerForm = document.getElementById('register-form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const phone = document.getElementById('phone').value;
+                    const address = document.getElementById('address').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+                    
+                    // Basic validation
+                    if (password !== confirmPassword) {
+                        alert('Passwords do not match!');
+                        return;
+                    }
+                    
+                    if (password.length < 6) {
+                        alert('Password must be at least 6 characters long!');
+                        return;
+                    }
+                    
+                    // Check if user already exists
+                    const users = JSON.parse(localStorage.getItem('users') || '{}');
+                    if (users[email]) {
+                        alert('An account with this email already exists!');
+                        return;
+                    }
+                    
+                    // Hash password (simple implementation for demo purposes)
+                    // In production, use a proper hashing library like bcrypt
+                    const hashedPassword = btoa(password); // Base64 encoding (NOT secure for production)
+                    
+                    // Save user data with additional information
+                    users[email] = {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        address: address,
+                        password: hashedPassword
+                    };
+                    
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        name: name, 
+                        email: email,
+                        phone: phone,
+                        address: address
+                    }));
+                    
+                    alert('Account created successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Handle social login buttons
+            const googleBtn = document.querySelector('.google-btn');
+            const facebookBtn = document.querySelector('.facebook-btn');
+            
+            if (googleBtn) {
+                googleBtn.addEventListener('click', function() {
+                    alert('Google registration would be implemented in a production environment with proper OAuth integration.');
+                    // Simulate successful registration for demo purposes
+                    const email = 'google.user@example.com';
+                    const users = JSON.parse(localStorage.getItem('users') || '{}');
+                    users[email] = {
+                        name: 'Google User',
+                        email: email,
+                        password: '' // No password needed for social login
+                    };
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        name: 'Google User',
+                        email: email
+                    }));
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            if (facebookBtn) {
+                facebookBtn.addEventListener('click', function() {
+                    alert('Facebook registration would be implemented in a production environment with proper OAuth integration.');
+                    // Simulate successful registration for demo purposes
+                    const email = 'facebook.user@example.com';
+                    const users = JSON.parse(localStorage.getItem('users') || '{}');
+                    users[email] = {
+                        name: 'Facebook User',
+                        email: email,
+                        password: '' // No password needed for social login
+                    };
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        name: 'Facebook User',
+                        email: email
+                    }));
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+        
+        function updateNavigation(currentUser, isAdmin) {
+            const nav = document.querySelector('nav ul');
+            if (!nav) return;
+            
+            // Remove existing auth links
+            const authLinks = document.querySelectorAll('.auth-link');
+            authLinks.forEach(link => link.remove());
+            
+            if (isAdmin) {
+                // If admin is logged in, show minimal navigation
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li class="auth-link"><a href="#" id="admin-logout">Admin Logout</a></li>
+                `;
+                
+                // Add admin logout event listener
+                document.getElementById('admin-logout').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            } else if (currentUser) {
+                // If regular user is logged in
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a></li>
+                    <li class="auth-link"><a href="#" id="user-logout">Logout (${currentUser.name})</a></li>
+                `;
+                
+                // Add user logout event listener
+                document.getElementById('user-logout').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('currentUser');
+                    alert('Logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            } else {
+                // If no user is logged in
+                nav.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="contact.html">Contact</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="cart.html" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </a></li>
+                    <li class="auth-link"><a href="login.html">Login</a></li>
+                `;
+            }
+            
+            // Load cart count
+            loadCart();
+        }
+        
+        // Footer dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

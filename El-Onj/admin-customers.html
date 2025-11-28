@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management - El-Onj Kiddies Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-products.html">Products</a></li>
+                    <li><a href="admin-orders.html">Orders</a></li>
+                    <li><a href="admin-customers.html">Customers</a></li>
+                    <li><a href="admin-contacts.html">Contacts</a></li>
+                    <li><a href="#" id="admin-logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Customers Page -->
+    <section class="admin-dashboard">
+        <div class="container">
+            <h2>Customer Management</h2>
+            
+            <div class="admin-controls">
+                <div class="control-panel">
+                    <h3>Registered Customers</h3>
+                    <div class="search-filter">
+                        <input type="text" id="customer-search" placeholder="Search customers by name or email...">
+                        <button id="clear-search">Clear</button>
+                    </div>
+                    <div class="customer-list" id="customer-list">
+                        <!-- Customers will be loaded here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <h3>Contact Messages</h3>
+                    <div class="search-filter">
+                        <input type="text" id="contact-search" placeholder="Search contacts by name or subject...">
+                        <button id="clear-contact-search">Clear</button>
+                    </div>
+                    <div class="contacts-list" id="contacts-list">
+                        <!-- Contact messages will be loaded here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (!isAdmin) {
+                alert('Access denied! Please log in as admin.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle admin logout
+            const adminLogout = document.getElementById('admin-logout');
+            if (adminLogout) {
+                adminLogout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Load customers and contacts
+            loadCustomersAndContacts();
+            
+            // Setup search functionality
+            setupSearch();
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Footer dropdown functionality
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+        
+        // Setup search functionality
+        function setupSearch() {
+            const customerSearch = document.getElementById('customer-search');
+            const contactSearch = document.getElementById('contact-search');
+            const clearSearch = document.getElementById('clear-search');
+            const clearContactSearch = document.getElementById('clear-contact-search');
+            
+            if (customerSearch) {
+                customerSearch.addEventListener('input', function() {
+                    filterCustomers(this.value);
+                });
+            }
+            
+            if (contactSearch) {
+                contactSearch.addEventListener('input', function() {
+                    filterContacts(this.value);
+                });
+            }
+            
+            if (clearSearch) {
+                clearSearch.addEventListener('click', function() {
+                    if (customerSearch) {
+                        customerSearch.value = '';
+                        filterCustomers('');
+                    }
+                });
+            }
+            
+            if (clearContactSearch) {
+                clearContactSearch.addEventListener('click', function() {
+                    if (contactSearch) {
+                        contactSearch.value = '';
+                        filterContacts('');
+                    }
+                });
+            }
+        }
+        
+        // Filter customers based on search term
+        function filterCustomers(searchTerm) {
+            const usersObj = JSON.parse(localStorage.getItem('users')) || {};
+            const customers = Object.keys(usersObj).map(email => ({
+                email: email,
+                ...usersObj[email]
+            }));
+            
+            const filteredCustomers = customers.filter(customer => {
+                if (!searchTerm) return true;
+                const term = searchTerm.toLowerCase();
+                return (
+                    customer.name.toLowerCase().includes(term) ||
+                    customer.email.toLowerCase().includes(term)
+                );
+            });
+            
+            displayCustomers(filteredCustomers);
+        }
+        
+        // Filter contacts based on search term
+        function filterContacts(searchTerm) {
+            let contacts = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            
+            const filteredContacts = contacts.filter(contact => {
+                if (!searchTerm) return true;
+                const term = searchTerm.toLowerCase();
+                return (
+                    contact.name.toLowerCase().includes(term) ||
+                    contact.subject.toLowerCase().includes(term)
+                );
+            });
+            
+            displayContacts(filteredContacts);
+        }
+        
+        // Load customers and contacts from localStorage
+        function loadCustomersAndContacts() {
+            // Load registered customers
+            const usersObj = JSON.parse(localStorage.getItem('users')) || {};
+            // Convert object to array
+            const customers = Object.keys(usersObj).map(email => ({
+                email: email,
+                ...usersObj[email]
+            }));
+            
+            // Load contact messages
+            const contacts = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            
+            displayCustomers(customers);
+            displayContacts(contacts);
+        }
+        
+        // Display customers
+        function displayCustomers(customers) {
+            const customerList = document.getElementById('customer-list');
+            if (!customerList) return;
+            
+            if (customers.length === 0) {
+                customerList.innerHTML = '<p>No registered customers found.</p>';
+                return;
+            }
+            
+            let customersHTML = '<h3>Registered Customers</h3>';
+            customers.forEach(customer => {
+                customersHTML += `
+                    <div class="customer-card" data-email="${customer.email}">
+                        <h4>${customer.name}</h4>
+                        <p>Email: ${customer.email}</p>
+                        <p>Phone: ${customer.phone || 'N/A'}</p>
+                        <p>Address: ${customer.address || 'N/A'}</p>
+                        <div class="customer-actions">
+                            <button class="delete-customer-btn" onclick="deleteCustomer('${customer.email}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            customerList.innerHTML = customersHTML;
+        }
+        
+        // Delete a customer
+        function deleteCustomer(email) {
+            if (!confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
+                return;
+            }
+            
+            // Get existing users
+            const usersObj = JSON.parse(localStorage.getItem('users')) || {};
+            
+            // Remove the customer
+            if (usersObj[email]) {
+                delete usersObj[email];
+                
+                // Save to localStorage
+                localStorage.setItem('users', JSON.stringify(usersObj));
+                
+                // Reload the customer list
+                loadCustomersAndContacts();
+                
+                // Show success message
+                alert('Customer deleted successfully!');
+            }
+        }
+        
+        // Display contact messages
+        function displayContacts(contacts) {
+            const contactList = document.getElementById('contacts-list');
+            if (!contactList) return;
+            
+            if (contacts.length === 0) {
+                contactList.innerHTML = '<p>No contact messages found.</p>';
+                return;
+            }
+            
+            let contactsHTML = '<h3>Contact Messages</h3>';
+            contacts.forEach(contact => {
+                contactsHTML += `
+                    <div class="contact-card">
+                        <h4>${contact.name}</h4>
+                        <p>Email: ${contact.email}</p>
+                        <p>Subject: ${contact.subject}</p>
+                        <p>Message: ${contact.message}</p>
+                        <p>Date: ${new Date(contact.timestamp).toLocaleString()}</p>
+                        <div class="contact-actions">
+                            <button class="delete-contact-btn" onclick="deleteContact('${contact.timestamp}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            contactList.innerHTML = contactsHTML;
+        }
+        
+        // Delete a contact message
+        function deleteContact(timestamp) {
+            if (!confirm('Are you sure you want to delete this contact message?')) {
+                return;
+            }
+            
+            // Get existing contacts
+            let contacts = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            
+            // Remove the contact
+            contacts = contacts.filter(contact => contact.timestamp !== timestamp);
+            
+            // Save to localStorage
+            localStorage.setItem('contactMessages', JSON.stringify(contacts));
+            
+            // Reload the contact list
+            loadCustomersAndContacts();
+            
+            // Show success message
+            alert('Contact message deleted successfully!');
+        }
+    </script>
+</body>
+</html>

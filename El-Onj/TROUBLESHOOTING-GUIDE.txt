@@ -1,0 +1,105 @@
+EL-ONJ WEBSITE - SERVER CONFIGURATION AND TROUBLESHOOTING GUIDE
+
+PROBLEM: "Not Found - The requested URL /El-Onj/ was not found on this server."
+
+This error occurs when Apache cannot locate or access the El-Onj directory. Here's how to fix it:
+
+SOLUTION 1: CHECK APACHE IS RUNNING
+----------------------------------
+1. Open XAMPP Control Panel
+2. Ensure Apache service is started (green highlight)
+3. If not running, click "Start" button next to Apache
+4. Check for error messages in the console
+
+SOLUTION 2: VERIFY DIRECTORY ACCESS PERMISSIONS
+---------------------------------------------
+The most common cause is missing directory permissions in Apache configuration.
+
+1. Open file: C:\xampp\apache\conf\httpd.conf (as Administrator)
+2. Look for the Directory sections (search for "<Directory")
+3. Add this section if it doesn't exist:
+
+<Directory "C:/xampp/htdocs/El-Onj">
+    Options Indexes FollowSymLinks Includes ExecCGI
+    AllowOverride All
+    Require all granted
+</Directory>
+
+4. Save the file
+5. Restart Apache service
+
+SOLUTION 3: CHECK DOCUMENT ROOT CONFIGURATION
+--------------------------------------------
+1. In httpd.conf, verify the DocumentRoot setting:
+   DocumentRoot "C:/xampp/htdocs"
+
+2. Ensure your El-Onj folder is inside this directory:
+   C:\xampp\htdocs\El-Onj\
+
+SOLUTION 4: TEST WITH SIMPLIFIED PATH
+------------------------------------
+1. Create a simple test file directly in htdocs:
+   C:\xampp\htdocs\test.html
+   
+   Content:
+   <!DOCTYPE html>
+   <html>
+   <head><title>Test</title></head>
+   <body><h1>Apache Works!</h1></body>
+   </html>
+
+2. Access via: http://localhost/test.html
+
+If this works but El-Onj doesn't, the issue is definitely with directory permissions.
+
+SOLUTION 5: CASE SENSITIVITY ISSUES
+-----------------------------------
+1. Ensure you're using the exact folder name case:
+   Correct: http://localhost/El-Onj/
+   Wrong: http://localhost/el-onj/ or http://localhost/EL-ONJ/
+
+2. Check folder name in Windows Explorer:
+   C:\xampp\htdocs\El-Onj (with capital E and O)
+
+SOLUTION 6: FIREWALL/ANTIVIRUS INTERFERENCE
+------------------------------------------
+1. Temporarily disable firewall/antivirus
+2. Try accessing the site again
+3. If it works, add exception for XAMPP/Apache
+
+SOLUTION 7: PORT CONFLICTS
+-------------------------
+1. In XAMPP Control Panel, click "Config" next to Apache
+2. Select "httpd.conf"
+3. Find "Listen 80" and change to "Listen 8080"
+4. Find "ServerName localhost:80" and change to "ServerName localhost:8080"
+5. Restart Apache
+6. Access via: http://localhost:8080/El-Onj/
+
+SOLUTION 8: REINSTALL XAMPP
+---------------------------
+If none of the above work:
+1. Stop all XAMPP services
+2. Uninstall XAMPP
+3. Download fresh copy from apachefriends.org
+4. Install as Administrator
+5. Place your files in the new installation
+
+TEST FILES INCLUDED IN THIS PROJECT:
+-----------------------------------
+1. test.html - Simple HTML test
+2. info.php - PHP information (if this works, PHP is functioning)
+3. index.html - Main website page
+
+DEBUGGING STEPS:
+----------------
+1. Try accessing: http://localhost/El-Onj/test.html
+2. Try accessing: http://localhost/El-Onj/info.php
+3. Check Apache error logs: C:\xampp\apache\logs\error.log
+4. Check Apache access logs: C:\xampp\apache\logs\access.log
+
+If you continue to have issues, please provide:
+1. Screenshots of XAMPP Control Panel showing running services
+2. Contents of Apache error.log file
+3. Exact URL you're trying to access
+4. Screenshots of the error message

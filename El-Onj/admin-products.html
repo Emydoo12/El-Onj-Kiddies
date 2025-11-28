@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - El-Onj Kiddies Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-products.html">Products</a></li>
+                    <li><a href="admin-orders.html">Orders</a></li>
+                    <li><a href="admin-customers.html">Customers</a></li>
+                    <li><a href="admin-contacts.html">Contacts</a></li>
+                    <li><a href="#" id="admin-logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Products Page -->
+    <section class="admin-dashboard">
+        <div class="container">
+            <h2>Product Management</h2>
+            
+            <!-- Add New Product Form -->
+            <div class="admin-controls">
+                <div class="control-panel">
+                    <h3>Add New Product</h3>
+                    <form id="add-product-form">
+                        <div class="form-group">
+                            <label for="product-name">Product Name</label>
+                            <input type="text" id="product-name" name="product-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-description">Description</label>
+                            <textarea id="product-description" name="product-description" required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="half-width">
+                                <div class="form-group">
+                                    <label for="product-price">Price (₦)</label>
+                                    <input type="number" id="product-price" name="product-price" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="half-width">
+                                <div class="form-group">
+                                    <label for="product-category">Category</label>
+                                    <select id="product-category" name="product-category" required>
+                                        <!-- Categories will be populated dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="product-image">Product Image</label>
+                            <input type="file" id="product-image" name="product-image" accept="image/*">
+                            <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Or enter image URL below:</p>
+                            <input type="text" id="product-image-url" name="product-image-url" placeholder="https://example.com/image.jpg">
+                            <div id="image-preview" style="margin-top: 10px; display: none;">
+                                <p>Image Preview:</p>
+                                <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px;">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn">Add Product</button>
+                    </form>
+                </div>
+                
+                <!-- Category Management -->
+                <div class="control-panel">
+                    <h3>Category Management</h3>
+                    <div class="category-management">
+                        <div class="form-group">
+                            <label for="new-category">Add New Category</label>
+                            <div class="input-group">
+                                <input type="text" id="new-category" placeholder="Enter category name">
+                                <button id="add-category-btn" class="btn">Add</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Existing Categories</label>
+                            <div class="category-list" id="category-list">
+                                <!-- Categories will be loaded here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Existing Products</h3>
+                    <div class="product-list" id="product-list">
+                        <!-- Products will be loaded here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // For storing uploaded images as data URLs
+        let uploadedImageDataURL = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (!isAdmin) {
+                alert('Access denied! Please log in as admin.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle admin logout
+            const adminLogout = document.getElementById('admin-logout');
+            if (adminLogout) {
+                adminLogout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Load categories and products
+            loadCategories();
+            loadProducts();
+            
+            // Handle file input change for image preview
+            const imageInput = document.getElementById('product-image');
+            if (imageInput) {
+                imageInput.addEventListener('change', function(e) {
+                    handleImagePreview(e);
+                });
+            }
+            
+            // Handle form submission
+            const addProductForm = document.getElementById('add-product-form');
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addProduct();
+                });
+            }
+            
+            // Handle add category button
+            const addCategoryBtn = document.getElementById('add-category-btn');
+            if (addCategoryBtn) {
+                addCategoryBtn.addEventListener('click', function() {
+                    addCategory();
+                });
+            }
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Footer dropdown functionality
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+        
+        // Load categories from localStorage
+        function loadCategories() {
+            let categories = JSON.parse(localStorage.getItem('categories')) || [
+                { id: 't-shirts', name: 'T-Shirts' },
+                { id: 'jeans', name: 'Jeans' },
+                { id: 'dresses', name: 'Dresses' },
+                { id: 'shorts', name: 'Shorts' },
+                { id: 'jackets', name: 'Jackets' },
+                { id: 'sweaters', name: 'Sweaters' }
+            ];
+            
+            // Save categories to localStorage if they don't exist
+            if (!localStorage.getItem('categories')) {
+                localStorage.setItem('categories', JSON.stringify(categories));
+            }
+            
+            displayCategories(categories);
+            populateCategoryDropdown(categories);
+        }
+        
+        // Display categories in the management section
+        function displayCategories(categories) {
+            const categoryList = document.getElementById('category-list');
+            if (!categoryList) return;
+            
+            if (categories.length === 0) {
+                categoryList.innerHTML = '<p>No categories found.</p>';
+                return;
+            }
+            
+            let categoriesHTML = '';
+            categories.forEach(category => {
+                categoriesHTML += `
+                    <div class="category-item" data-id="${category.id}">
+                        <span>${category.name}</span>
+                        <button class="delete-category-btn" onclick="deleteCategory('${category.id}')">Delete</button>
+                    </div>
+                `;
+            });
+            
+            categoryList.innerHTML = categoriesHTML;
+        }
+        
+        // Populate category dropdown in the add product form
+        function populateCategoryDropdown(categories) {
+            const categorySelect = document.getElementById('product-category');
+            if (!categorySelect) return;
+            
+            categorySelect.innerHTML = '';
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        }
+        
+        // Add a new category
+        function addCategory() {
+            const categoryNameInput = document.getElementById('new-category');
+            if (!categoryNameInput) return;
+            
+            const categoryName = categoryNameInput.value.trim();
+            if (!categoryName) {
+                alert('Please enter a category name.');
+                return;
+            }
+            
+            // Generate ID from category name (lowercase, spaces replaced with hyphens)
+            const categoryId = categoryName.toLowerCase().replace(/\s+/g, '-');
+            
+            // Get existing categories
+            let categories = JSON.parse(localStorage.getItem('categories')) || [];
+            
+            // Check if category already exists
+            if (categories.some(cat => cat.id === categoryId)) {
+                alert('Category already exists.');
+                return;
+            }
+            
+            // Add new category
+            categories.push({
+                id: categoryId,
+                name: categoryName
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('categories', JSON.stringify(categories));
+            
+            // Update display
+            displayCategories(categories);
+            populateCategoryDropdown(categories);
+            
+            // Clear input
+            categoryNameInput.value = '';
+            
+            // Show success message
+            alert('Category added successfully!');
+        }
+        
+        // Delete a category
+        function deleteCategory(categoryId) {
+            if (!confirm('Are you sure you want to delete this category? All products in this category will remain but will be uncategorized.')) {
+                return;
+            }
+            
+            // Get existing categories
+            let categories = JSON.parse(localStorage.getItem('categories')) || [];
+            
+            // Remove the category
+            categories = categories.filter(category => category.id !== categoryId);
+            
+            // Save to localStorage
+            localStorage.setItem('categories', JSON.stringify(categories));
+            
+            // Update display
+            displayCategories(categories);
+            populateCategoryDropdown(categories);
+            
+            // Show success message
+            alert('Category deleted successfully!');
+        }
+        
+        // Handle image preview
+        function handleImagePreview(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImageDataURL = e.target.result;
+                    
+                    // Show preview
+                    const previewContainer = document.getElementById('image-preview');
+                    const previewImg = document.getElementById('preview-img');
+                    if (previewContainer && previewImg) {
+                        previewImg.src = uploadedImageDataURL;
+                        previewContainer.style.display = 'block';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Load products from localStorage
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+            
+            displayProducts(products);
+        }
+        
+        // Display products in the admin panel
+        function displayProducts(products) {
+            const productList = document.getElementById('product-list');
+            if (!productList) return;
+            
+            // Get categories for display
+            const categories = JSON.parse(localStorage.getItem('categories')) || [
+                { id: 't-shirts', name: 'T-Shirts' },
+                { id: 'jeans', name: 'Jeans' },
+                { id: 'dresses', name: 'Dresses' },
+                { id: 'shorts', name: 'Shorts' },
+                { id: 'jackets', name: 'Jackets' },
+                { id: 'sweaters', name: 'Sweaters' }
+            ];
+            
+            // Create a map for quick lookup
+            const categoryMap = {};
+            categories.forEach(category => {
+                categoryMap[category.id] = category.name;
+            });
+            
+            if (products.length === 0) {
+                productList.innerHTML = '<p>No products found.</p>';
+                return;
+            }
+            
+            let productsHTML = '';
+            products.forEach(product => {
+                const categoryName = categoryMap[product.category] || product.category;
+                
+                productsHTML += `
+                    <div class="product-card" data-id="${product.id}">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <h4 class="product-name">${product.name}</h4>
+                        <p class="product-description">${product.description}</p>
+                        <div class="price">₦${product.price.toLocaleString()}</div>
+                        <div class="category">${categoryName}</div>
+                        <div class="product-actions">
+                            <button class="edit-product-btn" onclick="editProduct(${product.id})">Edit</button>
+                            <button class="delete-product-btn" onclick="deleteProduct(${product.id})">Delete</button>
+                        </div>
+                        <!-- Edit Form (hidden by default) -->
+                        <div class="edit-form" id="edit-form-${product.id}" style="display: none;">
+                            <div class="form-group">
+                                <label for="edit-name-${product.id}">Name</label>
+                                <input type="text" id="edit-name-${product.id}" value="${product.name}">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-price-${product.id}">Price (₦)</label>
+                                <input type="number" id="edit-price-${product.id}" value="${product.price}" min="0" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-category-${product.id}">Category</label>
+                                <select id="edit-category-${product.id}">
+                                    ${categories.map(cat => {
+                                        const selected = product.category === cat.id ? 'selected' : '';
+                                        return `<option value="${cat.id}" ${selected}>${cat.name}</option>`;
+                                    }).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-image-${product.id}">Product Image</label>
+                                <input type="file" id="edit-image-upload-${product.id}" accept="image/*" class="edit-image-upload">
+                                <p style="margin-top: 5px; font-size: 0.9rem; color: #666;">Or enter image URL below:</p>
+                                <input type="text" id="edit-image-${product.id}" value="${product.image}" class="edit-image-url">
+                                <div class="edit-image-preview" id="edit-image-preview-${product.id}" style="margin-top: 10px; display: none;">
+                                    <p>Image Preview:</p>
+                                    <img src="" alt="Preview" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn save-btn" onclick="saveProduct(${product.id})">Save</button>
+                                <button class="btn cancel-btn" onclick="cancelEdit(${product.id})">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            productList.innerHTML = productsHTML;
+            
+            // Add event listeners for image uploads in edit forms
+            products.forEach(product => {
+                const imageUpload = document.getElementById(`edit-image-upload-${product.id}`);
+                if (imageUpload) {
+                    imageUpload.addEventListener('change', function(e) {
+                        handleEditImagePreview(e, product.id);
+                    });
+                }
+            });
+        }
+        
+        // Handle image preview for edit forms
+        function handleEditImagePreview(event, productId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update the image URL field with the data URL
+                    const imageUrlField = document.getElementById(`edit-image-${productId}`);
+                    if (imageUrlField) {
+                        imageUrlField.value = e.target.result;
+                    }
+                    
+                    // Show preview
+                    const previewContainer = document.getElementById(`edit-image-preview-${productId}`);
+                    const previewImg = previewContainer ? previewContainer.querySelector('img') : null;
+                    if (previewContainer && previewImg) {
+                        previewImg.src = e.target.result;
+                        previewContainer.style.display = 'block';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Save edited product
+        function saveProduct(productId) {
+            // Get the edited values
+            const nameInput = document.getElementById(`edit-name-${productId}`);
+            const priceInput = document.getElementById(`edit-price-${productId}`);
+            const categoryInput = document.getElementById(`edit-category-${productId}`);
+            const imageInput = document.getElementById(`edit-image-${productId}`);
+            
+            if (!nameInput || !priceInput || !categoryInput || !imageInput) return;
+            
+            const newName = nameInput.value;
+            const newPrice = parseFloat(priceInput.value);
+            const newCategory = categoryInput.value;
+            const newImage = imageInput.value;
+            
+            // Validate inputs
+            if (!newName || isNaN(newPrice) || newPrice <= 0 || !newImage || !newCategory) {
+                alert('Please fill in all fields with valid values.');
+                return;
+            }
+            
+            // Get existing products
+            let products = JSON.parse(localStorage.getItem('products')) || [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+            
+            // Find and update the product
+            const productIndex = products.findIndex(product => product.id === productId);
+            if (productIndex !== -1) {
+                products[productIndex].name = newName;
+                products[productIndex].price = newPrice;
+                products[productIndex].category = newCategory;
+                products[productIndex].image = newImage;
+                
+                // Save to localStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                
+                // Update display
+                displayProducts(products);
+                
+                // Show success message
+                alert('Product updated successfully!');
+            }
+        }
+        
+        // Add a new product
+        function addProduct() {
+            const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const category = document.getElementById('product-category').value;
+            
+            // Get image - either uploaded file or URL
+            let image = '';
+            if (uploadedImageDataURL) {
+                image = uploadedImageDataURL;
+            } else {
+                image = document.getElementById('product-image-url').value || 'https://via.placeholder.com/300x300?text=Product+Image';
+            }
+            
+            // Get existing products
+            let products = JSON.parse(localStorage.getItem('products')) || [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+            
+            // Generate new ID
+            const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+            
+            // Create new product
+            const newProduct = {
+                id: newId,
+                name: name,
+                description: description,
+                price: price,
+                category: category,
+                image: image
+            };
+            
+            // Add to products array
+            products.push(newProduct);
+            
+            // Save to localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Update display
+            displayProducts(products);
+            
+            // Reset form
+            document.getElementById('add-product-form').reset();
+            
+            // Reset image preview
+            uploadedImageDataURL = null;
+            const previewContainer = document.getElementById('image-preview');
+            if (previewContainer) {
+                previewContainer.style.display = 'none';
+            }
+            
+            // Show success message
+            alert('Product added successfully!');
+        }
+        
+        // Edit a product
+        function editProduct(productId) {
+            // Hide the product display
+            const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+            if (productCard) {
+                const productImage = productCard.querySelector('.product-image');
+                const productName = productCard.querySelector('.product-name');
+                const productPrice = productCard.querySelector('.price');
+                const productActions = productCard.querySelector('.product-actions');
+                
+                if (productImage) productImage.style.display = 'none';
+                if (productName) productName.style.display = 'none';
+                if (productPrice) productPrice.style.display = 'none';
+                if (productActions) productActions.style.display = 'none';
+                
+                // Show the edit form
+                const editForm = document.getElementById(`edit-form-${productId}`);
+                if (editForm) {
+                    editForm.style.display = 'block';
+                }
+            }
+        }
+        
+        // Cancel edit
+        function cancelEdit(productId) {
+            // Show the product display
+            const productCard = document.querySelector(`.product-card[data-id="${productId}"]`);
+            if (productCard) {
+                const productImage = productCard.querySelector('.product-image');
+                const productName = productCard.querySelector('.product-name');
+                const productPrice = productCard.querySelector('.price');
+                const productActions = productCard.querySelector('.product-actions');
+                
+                if (productImage) productImage.style.display = 'block';
+                if (productName) productName.style.display = 'block';
+                if (productPrice) productPrice.style.display = 'block';
+                if (productActions) productActions.style.display = 'block';
+                
+                // Hide the edit form
+                const editForm = document.getElementById(`edit-form-${productId}`);
+                if (editForm) {
+                    editForm.style.display = 'none';
+                }
+            }
+        }
+        
+        // Delete a product
+        function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) {
+                return;
+            }
+            
+            // Get existing products
+            let products = JSON.parse(localStorage.getItem('products')) || [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+            
+            // Remove product
+            products = products.filter(product => product.id !== productId);
+            
+            // Save to localStorage
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Update display
+            displayProducts(products);
+            
+            // Show success message
+            alert('Product deleted successfully!');
+        }
+    </script>
+</body>
+</html>

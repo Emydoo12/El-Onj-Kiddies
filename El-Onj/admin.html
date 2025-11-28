@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - El-Onj Kiddies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-products.html">Products</a></li>
+                    <li><a href="admin-orders.html">Orders</a></li>
+                    <li><a href="admin-customers.html">Customers</a></li>
+                    <li><a href="admin-contacts.html">Contacts</a></li>
+                    <li><a href="#" id="admin-logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <section class="admin-dashboard">
+        <div class="container">
+            <h2>Admin Dashboard</h2>
+            
+            <div class="admin-controls">
+                <div class="control-panel">
+                    <h3>Product Management</h3>
+                    <p>Add, edit, or remove products from the store.</p>
+                    <a href="admin-products.html" class="btn" style="margin-top: 15px; display: inline-block; text-align: center;">Manage Products</a>
+                </div>
+                
+                <div class="control-panel">
+                    <h3>Order Management</h3>
+                    <p>View and process customer orders.</p>
+                    <a href="admin-orders.html" class="btn" style="margin-top: 15px; display: inline-block; text-align: center;">View Orders</a>
+                </div>
+                
+                <div class="control-panel">
+                    <h3>Customer Management</h3>
+                    <p>Manage customer accounts and information.</p>
+                    <a href="admin-customers.html" class="btn" style="margin-top: 15px; display: inline-block; text-align: center;">View Customers</a>
+                </div>
+                
+                <div class="control-panel">
+                    <h3>Reports</h3>
+                    <p>View sales reports and analytics.</p>
+                    <a href="admin-orders.html" class="btn" style="margin-top: 15px; display: inline-block; text-align: center;">View Reports</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (!isAdmin) {
+                alert('Access denied! Please log in as admin.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle admin logout
+            const adminLogout = document.getElementById('admin-logout');
+            if (adminLogout) {
+                adminLogout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Footer dropdown functionality
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

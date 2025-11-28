@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - El-Onj Kiddies Admin</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-products.html">Products</a></li>
+                    <li><a href="admin-orders.html">Orders</a></li>
+                    <li><a href="admin-customers.html">Customers</a></li>
+                    <li><a href="admin-contacts.html">Contacts</a></li>
+                    <li><a href="#" id="admin-logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Orders Page -->
+    <section class="admin-dashboard">
+        <div class="container">
+            <h2>Order Management</h2>
+            
+            <div class="admin-controls">
+                <div class="control-panel">
+                    <h3>Recent Orders</h3>
+                    <div class="search-filter">
+                        <input type="text" id="order-search" placeholder="Search orders by customer name, email, or order ID...">
+                        <button id="clear-search">Clear</button>
+                    </div>
+                    <div class="order-list" id="order-list">
+                        <!-- Orders will be loaded here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <h3>Order Statistics</h3>
+                    <div class="stats-container" id="order-stats">
+                        <!-- Order statistics will be loaded here dynamically -->
+                    </div>
+                    <div class="chart-container">
+                        <h3>Monthly Revenue</h3>
+                        <canvas id="revenueChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Function to generate monthly revenue data
+        function getMonthlyRevenueData(orders) {
+            const monthlyData = {};
+            
+            // Initialize last 6 months
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - i);
+                const monthKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+                monthlyData[monthKey] = 0;
+            }
+            
+            // Calculate revenue for each month
+            orders.forEach(order => {
+                const orderDate = new Date(order.timestamp);
+                const monthKey = `${orderDate.getFullYear()}-${(orderDate.getMonth() + 1).toString().padStart(2, '0')}`;
+                
+                if (monthlyData.hasOwnProperty(monthKey)) {
+                    monthlyData[monthKey] += order.total;
+                }
+            });
+            
+            return monthlyData;
+        }
+        
+        // Function to update order statistics
+        function updateOrderStatistics(orders) {
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            
+            // Calculate orders by payment method
+            const paymentStats = {
+                opay: { count: 0, revenue: 0 },
+                'bank-transfer': { count: 0, revenue: 0 },
+                'cash-on-delivery': { count: 0, revenue: 0 }
+            };
+            
+            orders.forEach(order => {
+                if (paymentStats.hasOwnProperty(order.paymentMethod)) {
+                    paymentStats[order.paymentMethod].count++;
+                    paymentStats[order.paymentMethod].revenue += order.total;
+                }
+            });
+            
+            // Calculate recent orders (last 30 days)
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            
+            const recentOrders = orders.filter(order => {
+                const orderDate = new Date(order.timestamp);
+                return orderDate >= thirtyDaysAgo;
+            });
+            
+            const recentRevenue = recentOrders.reduce((sum, order) => sum + order.total, 0);
+            
+            // Calculate average order value
+            const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+            
+            const statsContainer = document.getElementById('order-stats');
+            if (statsContainer) {
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>${totalOrders}</h3>
+                        <p>Total Orders</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>₦${totalRevenue.toLocaleString()}</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>₦${averageOrderValue.toLocaleString()}</h3>
+                        <p>Average Order</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>${recentOrders.length}</h3>
+                        <p>Orders (30 days)</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>₦${recentRevenue.toLocaleString()}</h3>
+                        <p>Revenue (30 days)</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>${paymentStats.opay.count}</h3>
+                        <p>OPay Orders</p>
+                        <div class="stat-subtext">₦${paymentStats.opay.revenue.toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>${paymentStats['bank-transfer'].count}</h3>
+                        <p>Bank Transfer</p>
+                        <div class="stat-subtext">₦${paymentStats['bank-transfer'].revenue.toLocaleString()}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3>${paymentStats['cash-on-delivery'].count}</h3>
+                        <p>Cash on Delivery</p>
+                        <div class="stat-subtext">₦${paymentStats['cash-on-delivery'].revenue.toLocaleString()}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        // Function to create revenue chart
+        function createRevenueChart(orders) {
+            const monthlyData = getMonthlyRevenueData(orders);
+            const months = Object.keys(monthlyData);
+            const revenues = Object.values(monthlyData);
+            
+            // Format month labels (e.g., "2023-01" -> "Jan 2023")
+            const monthLabels = months.map(month => {
+                const [year, monthNum] = month.split('-');
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return `${monthNames[parseInt(monthNum) - 1]} ${year}`;
+            });
+            
+            // Simple bar chart implementation
+            const chartContainer = document.querySelector('.chart-container');
+            if (chartContainer) {
+                let chartHTML = '<div class="chart-bars">';
+                const maxRevenue = Math.max(...revenues);
+                
+                monthLabels.forEach((label, index) => {
+                    const revenue = revenues[index];
+                    const height = maxRevenue > 0 ? (revenue / maxRevenue) * 100 : 0;
+                    chartHTML += `
+                        <div class="chart-bar-container">
+                            <div class="chart-bar" style="height: ${height}%">
+                                <div class="chart-bar-value">₦${revenue.toLocaleString()}</div>
+                            </div>
+                            <div class="chart-bar-label">${label}</div>
+                        </div>
+                    `;
+                });
+                
+                chartHTML += '</div>';
+                chartContainer.innerHTML = `<h3>Monthly Revenue</h3>${chartHTML}`;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (!isAdmin) {
+                alert('Access denied! Please log in as admin.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle admin logout
+            const adminLogout = document.getElementById('admin-logout');
+            if (adminLogout) {
+                adminLogout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Load orders
+            loadOrders();
+            
+            // Setup search functionality
+            setupSearch();
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Footer dropdown functionality
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+        
+        // Setup search functionality
+        function setupSearch() {
+            const orderSearch = document.getElementById('order-search');
+            const clearSearch = document.getElementById('clear-search');
+            
+            if (orderSearch) {
+                orderSearch.addEventListener('input', function() {
+                    filterOrders(this.value);
+                });
+            }
+            
+            if (clearSearch) {
+                clearSearch.addEventListener('click', function() {
+                    if (orderSearch) {
+                        orderSearch.value = '';
+                        filterOrders('');
+                    }
+                });
+            }
+        }
+        
+        // Filter orders based on search term
+        function filterOrders(searchTerm) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            const filteredOrders = orders.filter(order => {
+                if (!searchTerm) return true;
+                const term = searchTerm.toLowerCase();
+                return (
+                    order.id.toLowerCase().includes(term) ||
+                    order.name.toLowerCase().includes(term) ||
+                    order.email.toLowerCase().includes(term)
+                );
+            });
+            
+            displayOrders(filteredOrders);
+            updateOrderStatistics(filteredOrders);
+            createRevenueChart(filteredOrders);
+        }
+        
+        // Load orders from localStorage
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            displayOrders(orders);
+            updateOrderStatistics(orders);
+            createRevenueChart(orders);
+        }
+        
+        // Display orders
+        function displayOrders(orders) {
+            const orderList = document.getElementById('order-list');
+            if (!orderList) return;
+            
+            if (orders.length === 0) {
+                orderList.innerHTML = '<p>No orders found.</p>';
+                return;
+            }
+            
+            let ordersHTML = '';
+            orders.forEach(order => {
+                // Format order items
+                let itemsHTML = '';
+                if (order.items && order.items.length > 0) {
+                    itemsHTML = '<div class="order-items">';
+                    order.items.forEach(item => {
+                        itemsHTML += `<div class="order-item">${item.quantity} x Product #${item.productId}</div>`;
+                    });
+                    itemsHTML += '</div>';
+                }
+                
+                // Format payment method
+                let paymentMethod = '';
+                switch(order.paymentMethod) {
+                    case 'opay':
+                        paymentMethod = 'OPay Transfer';
+                        break;
+                    case 'bank-transfer':
+                        paymentMethod = 'Bank Transfer';
+                        break;
+                    case 'cash-on-delivery':
+                        paymentMethod = 'Cash on Delivery';
+                        break;
+                    default:
+                        paymentMethod = order.paymentMethod;
+                }
+                
+                ordersHTML += `
+                    <div class="order-card" data-order-id="${order.id}">
+                        <div class="order-header">
+                            <h4>Order #${order.id}</h4>
+                            <button class="delete-order-btn" onclick="deleteOrder('${order.id}')">Delete</button>
+                        </div>
+                        <div class="order-details">
+                            <p><strong>Customer:</strong> ${order.name}</p>
+                            <p><strong>Email:</strong> ${order.email}</p>
+                            <p><strong>Phone:</strong> ${order.phone}</p>
+                            <p><strong>Address:</strong> ${order.address}</p>
+                            <p><strong>Payment Method:</strong> ${paymentMethod}</p>
+                            <p><strong>Date:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+                            <p><strong>Total:</strong> ₦${order.total.toLocaleString()}</p>
+                            ${itemsHTML}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            orderList.innerHTML = ordersHTML;
+        }
+        
+        // Delete an order
+        function deleteOrder(orderId) {
+            if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+                return;
+            }
+            
+            // Get existing orders
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Remove the order
+            orders = orders.filter(order => order.id !== orderId);
+            
+            // Save to localStorage
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Reload the order list
+            loadOrders();
+            
+            // Show success message
+            alert('Order deleted successfully!');
+        }
+    </script>
+</body>
+</html>
