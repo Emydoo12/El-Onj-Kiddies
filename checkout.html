@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - El-Onj Kiddies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Premium Children's Wear</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Cart (<span id="cart-count">0</span>)</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">Quick Links</a>
+                        <div class="dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Checkout Form -->
+    <section class="checkout-form">
+        <div class="container">
+            <h2>Checkout</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Delivery Address</label>
+                    <textarea id="address" name="address" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="payment-method">Payment Method</label>
+                    <select id="payment-method" name="payment-method" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="opay">OPay Transfer (8030682830)</option>
+                        <option value="bank-transfer">Bank Transfer</option>
+                        <option value="cash-on-delivery">Cash on Delivery</option>
+                    </select>
+                </div>
+                
+                <div class="form-group opay-details" id="opay-details" style="display: none;">
+                    <h3>OPay Transfer Details</h3>
+                    <p>Please transfer the total amount to the following OPay account:</p>
+                    <div class="payment-info">
+                        <p><strong>Account Number:</strong> 8030682830</p>
+                        <p><strong>Account Name:</strong> El-Onj Kiddies</p>
+                        <p><strong>Bank:</strong> OPay</p>
+                    </div>
+                    <p>After making the transfer, please keep your transaction reference number for confirmation.</p>
+                </div>
+                
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="order-items">
+                        <!-- Order items will be populated by JavaScript -->
+                    </div>
+                    <div class="total">
+                        <strong>Total: ₦<span id="total-amount">0</span></strong>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Place Order</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart items and calculate total
+            loadCartItems();
+            
+            // Populate customer information if user is logged in
+            populateCustomerInfo();
+            
+            // Handle payment method change
+            const paymentMethod = document.getElementById('payment-method');
+            if (paymentMethod) {
+                paymentMethod.addEventListener('change', function() {
+                    const opayDetails = document.getElementById('opay-details');
+                    if (opayDetails) {
+                        if (this.value === 'opay') {
+                            opayDetails.style.display = 'block';
+                        } else {
+                            opayDetails.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            // Handle form submission
+            const checkoutForm = document.getElementById('checkout-form');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    placeOrder();
+                });
+            }
+            
+            // Load cart count
+            loadCart();
+        });
+        
+        // Populate customer information if user is logged in
+        function populateCustomerInfo() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                if (document.getElementById('name')) {
+                    document.getElementById('name').value = currentUser.name || '';
+                }
+                if (document.getElementById('email')) {
+                    document.getElementById('email').value = currentUser.email || '';
+                }
+                if (document.getElementById('phone')) {
+                    document.getElementById('phone').value = currentUser.phone || '';
+                }
+                if (document.getElementById('address')) {
+                    document.getElementById('address').value = currentUser.address || '';
+                }
+            }
+        }
+        
+        // Load cart items and display them in the checkout form
+        function loadCartItems() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = getProducts();
+            
+            const orderItems = document.getElementById('order-items');
+            const totalAmount = document.getElementById('total-amount');
+            
+            if (!orderItems || !totalAmount) return;
+            
+            if (cart.length === 0) {
+                orderItems.innerHTML = '<p>Your cart is empty.</p>';
+                totalAmount.textContent = '0';
+                return;
+            }
+            
+            let total = 0;
+            let itemsHTML = '';
+            
+            cart.forEach(cartItem => {
+                const product = products.find(p => p.id == cartItem.productId);
+                if (product) {
+                    const itemTotal = product.price * cartItem.quantity;
+                    total += itemTotal;
+                    
+                    itemsHTML += `
+                        <div class="order-item">
+                            <h4>${product.name}</h4>
+                            <p>Quantity: ${cartItem.quantity}</p>
+                            <p>Price: ₦${product.price.toLocaleString()}</p>
+                            <p>Subtotal: ₦${itemTotal.toLocaleString()}</p>
+                        </div>
+                    `;
+                }
+            });
+            
+            orderItems.innerHTML = itemsHTML;
+            totalAmount.textContent = total.toLocaleString();
+        }
+        
+        // Place order
+        function placeOrder() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+            
+            // Validate form
+            if (!name || !email || !phone || !address || !paymentMethod) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Get cart items and total
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const products = getProducts();
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+            
+            let total = 0;
+            cart.forEach(cartItem => {
+                const product = products.find(p => p.id == cartItem.productId);
+                if (product) {
+                    total += product.price * cartItem.quantity;
+                }
+            });
+            
+            // Generate order ID
+            const orderId = 'ORD-' + Date.now();
+            
+            // Create order object
+            const order = {
+                id: orderId,
+                name: name,
+                email: email,
+                phone: phone,
+                address: address,
+                paymentMethod: paymentMethod,
+                items: cart,
+                total: total,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save order to localStorage
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Clear cart
+            localStorage.removeItem('cart');
+            
+            // Redirect to thank you page
+            window.location.href = 'post-purchase-contact.html';
+        }
+        
+        // Get products from localStorage or sample data
+        function getProducts() {
+            const storedProducts = localStorage.getItem('products');
+            if (storedProducts) {
+                return JSON.parse(storedProducts);
+            }
+            
+            // Sample products data
+            return [
+                { id: 1, name: "Cute T-Shirt", description: "Comfortable cotton t-shirt for kids", price: 2500, category: "t-shirts", image: "https://via.placeholder.com/300x300?text=Cute+T-Shirt" },
+                { id: 2, name: "Jeans Set", description: "Stylish jeans set for boys and girls", price: 4500, category: "jeans", image: "https://via.placeholder.com/300x300?text=Jeans+Set" },
+                { id: 3, name: "Kids Dress", description: "Beautiful dress for special occasions", price: 3800, category: "dresses", image: "https://via.placeholder.com/300x300?text=Dress" },
+                { id: 4, name: "Kids Shorts", description: "Comfortable shorts for playtime", price: 2200, category: "shorts", image: "https://via.placeholder.com/300x300?text=Shorts" },
+                { id: 5, name: "Kids Jacket", description: "Warm jacket for cooler weather", price: 4000, category: "jackets", image: "https://via.placeholder.com/300x300?text=Jacket" },
+                { id: 6, name: "Kids Sweater", description: "Cozy sweater for everyday wear", price: 3500, category: "sweaters", image: "https://via.placeholder.com/300x300?text=Sweater" }
+            ];
+        }
+    </script>
+</body>
+</html>

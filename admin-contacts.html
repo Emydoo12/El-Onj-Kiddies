@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Contacts - El-Onj Kiddies</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- Logo image -->
+                <a href="index.html">
+                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                </a>
+                <!-- Text logo -->
+                <div class="logo-text">
+                    <h1>El-Onj Kiddies</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin-products.html">Products</a></li>
+                    <li><a href="admin-orders.html">Orders</a></li>
+                    <li><a href="admin-customers.html">Customers</a></li>
+                    <li><a href="admin-contacts.html">Contacts</a></li>
+                    <li><a href="#" id="admin-logout">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Contacts Page -->
+    <section class="admin-contacts">
+        <div class="container">
+            <h2>Customer Contacts</h2>
+            
+            <div class="contacts-controls">
+                <div class="contacts-list">
+                    <h3>Recent Contacts</h3>
+                    <div class="contacts-grid">
+                        <div class="contact-card">
+                            <h4>John Doe</h4>
+                            <p>Email: john@example.com</p>
+                            <p>Phone: 08012345678</p>
+                            <p>Subject: Product Inquiry</p>
+                            <p>Message: I'm interested in the kids dress collection.</p>
+                            <small>Received: 2025-11-25</small>
+                            <button class="delete-contact-btn">Delete</button>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h4>Jane Smith</h4>
+                            <p>Email: jane@example.com</p>
+                            <p>Phone: 08087654321</p>
+                            <p>Subject: Order Status</p>
+                            <p>Message: Can you please update me on my order #ORD-12345?</p>
+                            <small>Received: 2025-11-24</small>
+                            <button class="delete-contact-btn">Delete</button>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h4>Michael Johnson</h4>
+                            <p>Email: michael@example.com</p>
+                            <p>Phone: 08056781234</p>
+                            <p>Subject: Return Request</p>
+                            <p>Message: I would like to return the jeans set I purchased last week.</p>
+                            <small>Received: 2025-11-23</small>
+                            <button class="delete-contact-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>El-Onj Kiddies</h3>
+                    <p>Premium children's wear for your little ones</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"></a>
+                        <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
+                    <p>Email: info@elonjkiddies.com</p>
+                    <p>Phone: <a href="tel:08030682830">08030682830</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank">08030682830</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-dropdown">
+                        <button class="footer-dropdown-btn">Menu ▼</button>
+                        <div class="footer-dropdown-content">
+                            <a href="index.html">Home</a>
+                            <a href="products.html">Products</a>
+                            <a href="cart.html">Cart</a>
+                            <a href="contact.html">Contact</a>
+                            <a href="admin-login.html">Admin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 El-Onj Kiddies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is admin
+            const isAdmin = localStorage.getItem('isAdmin');
+            if (!isAdmin) {
+                alert('Access denied! Please log in as admin.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Load cart count
+            loadCart();
+            
+            // Handle admin logout
+            const adminLogout = document.getElementById('admin-logout');
+            if (adminLogout) {
+                adminLogout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    alert('Admin logged out successfully!');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Load contact messages
+            loadContactMessages();
+            
+            // Dropdown functionality
+            const dropdown = document.querySelector('.dropdown');
+            if (dropdown) {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    dropdown.classList.remove('active');
+                });
+            }
+            
+            // Footer dropdown functionality
+            const footerDropdowns = document.querySelectorAll('.footer-dropdown');
+            footerDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                footerDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+        });
+        
+        // Load contact messages from localStorage
+        function loadContactMessages() {
+            const contacts = JSON.parse(localStorage.getItem('contactMessages')) || [];
+            displayContactMessages(contacts);
+        }
+        
+        // Display contact messages
+        function displayContactMessages(contacts) {
+            const contactList = document.getElementById('contact-list');
+            if (!contactList) return;
+            
+            if (contacts.length === 0) {
+                contactList.innerHTML = '<p>No contact messages found.</p>';
+                return;
+            }
+            
+            let contactsHTML = '';
+            contacts.forEach(contact => {
+                contactsHTML += `
+                    <div class="contact-card">
+                        <h4>${contact.name}</h4>
+                        <p>Email: ${contact.email}</p>
+                        <p>Subject: ${contact.subject}</p>
+                        <p>Message: ${contact.message}</p>
+                        <p>Date: ${new Date(contact.timestamp).toLocaleString()}</p>
+                    </div>
+                `;
+            });
+            
+            contactList.innerHTML = contactsHTML;
+        }
+    </script>
+</body>
+</html>
