@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +14,7 @@
             <div class="logo">
                 <!-- Logo image -->
                 <a href="index.html">
-                    <img src="logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
+                    <img src="./logo.jpg" alt="El-Onj Kiddies Logo" class="logo-img">
                 </a>
                 <!-- Text logo -->
                 <div class="logo-text">
@@ -33,7 +32,7 @@
                             <a href="index.html">Home</a>
                             <a href="cart.html">Cart</a>
                             <a href="contact.html">Contact</a>
-                            <a href="admin-login.html">Admin</a>
+                            <a href="admin-register.html">Admin Register</a>
                         </div>
                     </li>
                     <li><a href="contact.html">Contact</a></li>
@@ -99,6 +98,7 @@
                     <div class="social-links">
                         <a href="https://www.facebook.com/oka.okoh" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://www.instagram.com/el_onj_kiddies/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/2348030682830" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -106,7 +106,6 @@
                     <p>Block A, Shop 52, Tonimas Plaza, Makurdi, Benue State</p>
                     <p>Email: info@elonjkiddies.com</p>
                     <p>Phone: <a href="tel:08030682830">08030682830</a></p>
-                    <p>WhatsApp: <a href="https://wa.me/2348030682830" target="_blank"><i class="fab fa-whatsapp"></i></a></p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
@@ -282,9 +281,12 @@
             
             let productsHTML = '';
             products.forEach(product => {
+                // Ensure the image URL is properly formatted
+                const imageUrl = product.image || 'https://via.placeholder.com/300x300?text=Product+Image';
+                
                 productsHTML += `
                     <div class="product-card" data-category="${product.category}" id="product-${product.id}">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${imageUrl}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Not+Found'">
                         <h3>${product.name}</h3>
                         <p>${product.description}</p>
                         <div class="price">₦${product.price.toLocaleString()}</div>
@@ -298,6 +300,14 @@
             // Reattach event listeners to add to cart buttons
             document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                 button.addEventListener('click', function() {
+                    // Check if user is logged in before adding to cart
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                    if (!currentUser) {
+                        alert('Please login to add items to your cart!');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
                     const id = parseInt(this.getAttribute('data-id'));
                     const name = this.getAttribute('data-name');
                     const price = this.getAttribute('data-price');
